@@ -6,7 +6,7 @@ Proyecto personal y no oficial: los datos son de meteocerdanyola.com.
 
 ## Qué muestra
 
-- **Temperatura actual**, sensación térmica y **gráfico de las últimas 24 h** con la temperatura marcada cada 6 horas (a las 00, 06, 12 y 18 h), y la máxima y la mínima con la hora a la que se dieron.
+- **Temperatura actual**, sensación térmica y **gráfico de las últimas 24 h** con la temperatura marcada cada 6 horas (a las 00, 06, 12 y 18 h), y, bajo la temperatura, la máxima y la mínima con la hora a la que se dieron.
 - **Viento** (actual, dirección y grados, y racha máxima de las 24 h).
 - **Presión** y su tendencia en las últimas 3 horas.
 - **Lluvia** acumulada en las últimas 24 h e intensidad actual (mm/h).
