@@ -1,28 +1,55 @@
 ---
-name: meteocerdanyola.com
 strategy: polling
-polling_verb: get
-polling_url: 'https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug={{ station }}&dataset=recent&hours=24&variables=temperature%2Chumidity%2Cwind%2Cpressure%2Crain&format=json'
-polling_headers: ''
-refresh_interval: 15
-dark_mode: 'no'
 no_screen_padding: 'no'
+dark_mode: 'no'
+static_data: ''
+polling_verb: get
+framework_version: 3.4.0
+serverless_language: ''
+refresh_interval_floor: ''
+polling_url: https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug={{ station }}&dataset=recent&hours=24&variables=temperature%2Chumidity%2Cwind%2Cpressure%2Crain&format=json
+polling_headers: ''
+polling_body: ''
+id: 495390
+oauth_enabled: 'false'
+oauth_pkce_enabled: 'no'
+oauth_authorize_url: ''
+oauth_token_url: ''
+oauth_scopes: ''
+oauth_scope_separator: ''
+oauth_refresh_url: ''
+oauth_auth_params: ''
+oauth_token_headers: ''
+oauth_token_site: ''
+oauth_token_params: ''
+oauth_token_request_auth_method: ''
+oauth_body_format: ''
+oauth_token_response_metadata: ''
+oauth_authorization_method: ''
+oauth_refresh_params: ''
+oauth_token_field_name: ''
+oauth_expiry_field_name: ''
+oauth_expiry_strategy: ''
+oauth_fixed_expiry_ms: ''
 custom_fields:
-  - keyname: station
-    field_type: select
-    name: Estación meteorológica
-    description: Estación de meteocerdanyola.com de la que se muestran los datos.
-    options:
-      - 'Cerdanyola Ateneu: cerdanyola_ateneu'
-      - 'Cerdanyola Centre: cerdanyola_centre'
-      - 'Cerdanyola Montflorit: cerdanyola_montflorit'
-    default: cerdanyola_ateneu
-  - keyname: language
-    field_type: select
-    name: Idioma
-    description: Idioma de los textos de la pantalla.
-    options:
-      - 'Català: ca'
-      - 'Castellano: es'
-      - 'English: en'
-    default: es
+- keyname: station
+  field_type: select
+  name: Estación meteorológica
+  description: Estación de meteocerdanyola.com de la que se muestran los datos.
+  options:
+  - 'Cerdanyola Ateneu: cerdanyola_ateneu'
+  - 'Cerdanyola Centre: cerdanyola_centre'
+  - 'Cerdanyola Montflorit: cerdanyola_montflorit'
+  default: cerdanyola_ateneu
+- keyname: language
+  field_type: select
+  name: Idioma
+  description: Idioma de los textos de la pantalla.
+  options:
+  - 'Català: ca'
+  - 'Castellano: es'
+  - 'English: en'
+  default: es
+name: meteocerdanyola.com
+description:
+refresh_interval:
