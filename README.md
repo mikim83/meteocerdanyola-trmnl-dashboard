@@ -6,7 +6,7 @@ Proyecto personal y no oficial: los datos son de meteocerdanyola.com.
 
 ## Qué muestra
 
-- **Temperatura actual**, sensación térmica y **gráfico de las últimas 24 h** con la temperatura marcada cada 6 horas (a las 00, 06, 12 y 18 h), y, bajo la temperatura, la máxima y la mínima con la hora a la que se dieron.
+- **Temperatura actual**, sensación térmica y **gráfico de las últimas 24 h** con la temperatura hora a hora (marcada a las 00, 06, 12 y 18 h) y **barras con la lluvia de cada hora**, y, bajo la temperatura, la máxima y la mínima con la hora a la que se dieron.
 - **Viento** (actual, dirección y grados, y racha máxima de las 24 h).
 - **Presión** y su tendencia en las últimas 3 horas.
 - **Lluvia** acumulada en las últimas 24 h e intensidad actual (mm/h).
@@ -28,7 +28,7 @@ El idioma cambia todos los textos, el separador decimal (coma en catalán y cast
 
 1. TRMNL consulta cada 15 minutos la API de datos abiertos de la estación elegida:
    `https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug=<estación>&dataset=recent&hours=24&variables=temperature,humidity,wind,pressure,rain&format=json`
-2. [`src/transform.js`](src/transform.js) reduce la respuesta (unas 1.100-1.400 lecturas, 400-550 KB) a unos 9 KB: valores actuales, máximas y mínimas, tendencia de presión, punto de rocío y series agrupadas cada 15 minutos. La lluvia por hora se calcula a partir del acumulado diario, que se reinicia a medianoche.
+2. [`src/transform.js`](src/transform.js) reduce la respuesta (unas 1.100-1.400 lecturas, 400-550 KB) a unos 9 KB: valores actuales, máximas y mínimas, tendencia de presión, punto de rocío y series agrupadas cada 15 minutos (y por horas para el gráfico de la vista completa). La lluvia por hora se calcula a partir del acumulado diario, que se reinicia a medianoche.
 3. Las plantillas Liquid dan formato a los números, traducen los textos y dibujan el gráfico con Highcharts.
 
 Los datos que la estación no envía se muestran como `—`; nunca se interpretan como cero.
