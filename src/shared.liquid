@@ -101,14 +101,14 @@
 
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
 <script>
-  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, suffix, tick (h), size (px de fuente)
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente)
   window.mcChart = function (id, data, opts) {
     opts = opts || {};
     var size = (opts.size || 14) + 'px';
     var draw = function () {
       Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
       Highcharts.chart(id, {
-        chart: { type: opts.type || 'line', backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 0] },
+        chart: { type: opts.type || 'line', height: opts.height, backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 12] },
         title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
         xAxis: {
           type: 'datetime', lineColor: '#000', tickColor: '#000', tickLength: 4, gridLineWidth: 0,

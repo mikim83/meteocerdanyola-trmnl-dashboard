@@ -54,7 +54,7 @@ Crea un plugin privado en TRMNL (*Plugins → Private Plugin*) y copia el conten
 2. **Form fields**: pega el bloque `custom_fields` de `src/settings.yml`.
 3. **Transform**: pega `src/transform.js`.
 4. **Markup**: pega cada `.liquid` en su pestaña (*Shared*, *Full*, *Half horizontal*, *Half vertical*, *Quadrant*).
-5. Fija **Framework CSS version** en `2.3.7`: el diseño está comprobado en el dispositivo con esa versión (con la 3.4.0 la vista completa se descuadra).
+5. **Framework CSS version**: el diseño está comprobado en el dispositivo con la `3.4.0` (la actual) y con la `2.3.7`. Sirve cualquiera de las dos.
 6. Guarda y elige estación e idioma en los ajustes del plugin.
 
 ## Datos y condiciones de uso

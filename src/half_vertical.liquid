@@ -17,7 +17,7 @@
 
   <div class="flex flex--col gap--small">
     <span class="label label--small">{{ s_last24 }} · {{ s_max }} {{ n_tmax }}° · {{ s_min }} {{ n_tmin }}°</span>
-    <div id="chart-temp" class="w--full h--[100px]"></div>
+    <div id="chart-temp" class="w--full"></div>
   </div>
 
   <div class="grid grid--cols-2">
@@ -56,7 +56,7 @@
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp | json }}, { suffix: '°', tick: 8, size: 12, tickAmount: 3 });</script>
+<script>mcChart('chart-temp', {{ series.temp | json }}, { height: 100, suffix: '°', tick: 8, size: 12, tickAmount: 3 });</script>
 {%- endif -%}
 
 <div class="title_bar">

@@ -21,7 +21,7 @@
         <span class="label label--small">{{ s_last24 }}</span>
         <span class="label label--small">{{ s_max }} {{ n_tmax }}° ({{ day.temp_max_time }}) · {{ s_min }} {{ n_tmin }}° ({{ day.temp_min_time }})</span>
       </div>
-      <div id="chart-temp" class="w--full h--[190px]"></div>
+      <div id="chart-temp" class="w--full"></div>
     </div>
   </div>
 
@@ -74,7 +74,7 @@
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp | json }}, { suffix: '°', tick: 6, size: 14 });</script>
+<script>mcChart('chart-temp', {{ series.temp | json }}, { height: 190, suffix: '°', tick: 6, size: 14 });</script>
 {%- endif -%}
 
 <div class="title_bar">
