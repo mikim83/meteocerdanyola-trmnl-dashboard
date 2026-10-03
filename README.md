@@ -1,77 +1,79 @@
-# meteocerdanyola.com · plugin para TRMNL
+# meteocerdanyola.com · plugin per a TRMNL
 
-**Castellano** · [Català](README.ca.md)
+[Castellano](README.es.md) · **Català**
 
-Plugin privado para [TRMNL](https://usetrmnl.com) (pantalla e-ink) que muestra el tiempo en directo de las estaciones de [meteocerdanyola.com](https://meteocerdanyola.com), en Cerdanyola del Vallès (Barcelona).
+Plugin privat per a [TRMNL](https://usetrmnl.com) (pantalla e-ink) que mostra el temps en directe de les estacions de [meteocerdanyola.com](https://meteocerdanyola.com), a Cerdanyola del Vallès (Barcelona).
 
-Proyecto personal y no oficial: los datos son de meteocerdanyola.com.
+Projecte personal i no oficial: les dades són de meteocerdanyola.com.
 
-## Capturas
+## Captures
 
-![Vista completa](docs/screenshots/full_es.png)
+![Vista completa](docs/screenshots/full_ca.png)
 
-| Media pantalla horizontal | Media pantalla vertical | Cuarto de pantalla |
+| Mitja pantalla horitzontal | Mitja pantalla vertical | Quart de pantalla |
 |---|---|---|
-| ![Media pantalla horizontal](docs/screenshots/half_horizontal_es.png) | ![Media pantalla vertical](docs/screenshots/half_vertical_es.png) | ![Cuarto de pantalla](docs/screenshots/quadrant_es.png) |
+| ![Mitja pantalla horitzontal](docs/screenshots/half_horizontal_ca.png) | ![Mitja pantalla vertical](docs/screenshots/half_vertical_ca.png) | ![Quart de pantalla](docs/screenshots/quadrant_ca.png) |
 
-Capturas con datos reales de la estación Ateneu, renderizadas en un navegador: la pantalla real es de 1 bit (blanco y negro).
+Captures amb dades reals de l'estació Ateneu, renderitzades en un navegador: la pantalla real és d'1 bit (blanc i negre).
 
-## Qué muestra
+## Què mostra
 
-- **Temperatura actual**, sensación térmica y **gráfico de las últimas 24 h** con la temperatura hora a hora (marcada a las 00, 06, 12 y 18 h) y **barras con la lluvia de cada hora**, y, bajo la temperatura, la máxima y la mínima con la hora a la que se dieron.
-- **Viento** (actual, dirección y grados, y racha máxima de las 24 h).
-- **Presión** y su tendencia en las últimas 3 horas.
-- **Lluvia** acumulada en las últimas 24 h e intensidad actual (mm/h).
-- **Humedad** y punto de rocío.
-- Hora de la última lectura. Si la estación lleva más de 45 minutos sin enviar datos, se marca como retrasada.
+- **Temperatura actual**, sensació tèrmica i **gràfic de les últimes 24 h** amb la temperatura hora a hora (marcada a les 00, 06, 12 i 18 h) i **barres amb la pluja de cada hora**, i, sota la temperatura, la màxima i la mínima amb l'hora a la qual es van donar.
+- **Vent** (actual, direcció i graus, i ratxa màxima de les 24 h).
+- **Pressió** i la seva tendència en les últimes 3 hores.
+- **Pluja** acumulada en les últimes 24 h i intensitat actual (mm/h).
+- **Humitat** i punt de rosada.
+- Hora de l'última lectura. Si l'estació fa més de 45 minuts que no envia dades, es marca com a endarrerida.
 
-Incluye las cuatro vistas de TRMNL: pantalla completa, media pantalla horizontal, media pantalla vertical y cuarto de pantalla.
+Inclou les quatre vistes de TRMNL: pantalla completa, mitja pantalla horitzontal, mitja pantalla vertical i quart de pantalla.
 
-## Ajustes del plugin
+S'adapta a la mida de la pantalla (provat a la normal, de 800×480 i 1 bit, i al TRMNX, de 1040×780 i escala de grisos): el gràfic ocupa l'espai vertical que sobra.
 
-| Campo | Valores | Por defecto |
+## Ajustos del plugin
+
+| Camp | Valors | Per defecte |
 |---|---|---|
-| **Estación meteorológica** (`station`) | `cerdanyola_ateneu`, `cerdanyola_centre`, `cerdanyola_montflorit` | `cerdanyola_ateneu` |
+| **Estació meteorològica** (`station`) | `cerdanyola_ateneu`, `cerdanyola_centre`, `cerdanyola_montflorit` | `cerdanyola_ateneu` |
 | **Idioma** (`language`) | Català (`ca`), Castellano (`es`), English (`en`) | `es` |
 
-El idioma cambia todos los textos, el separador decimal (coma en catalán y castellano, punto en inglés) y las letras de la rosa de los vientos (O/W).
+L'idioma canvia tots els textos, el separador decimal (coma en català i castellà, punt en anglès) i les lletres de la rosa dels vents (O/W).
 
-## Cómo funciona
+## Com funciona
 
-1. TRMNL consulta cada 15 minutos la API de datos abiertos de la estación elegida:
-   `https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug=<estación>&dataset=recent&hours=24&variables=temperature,humidity,wind,pressure,rain&format=json`
-2. [`src/transform.js`](src/transform.js) reduce la respuesta (unas 1.100-1.400 lecturas, 400-550 KB) a unos 9 KB: valores actuales, máximas y mínimas, tendencia de presión, punto de rocío y series agrupadas cada 15 minutos (y por horas para el gráfico de la vista completa). La lluvia por hora se calcula a partir del acumulado diario, que se reinicia a medianoche.
-3. Las plantillas Liquid dan formato a los números, traducen los textos y dibujan el gráfico con Highcharts.
+1. TRMNL consulta cada 15 minuts l'API de dades obertes de l'estació triada:
+   `https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug=<estació>&dataset=recent&hours=24&variables=temperature,humidity,wind,pressure,rain&format=json`
+2. [`src/transform.js`](src/transform.js) redueix la resposta (unes 1.100-1.400 lectures, 400-550 KB) a uns 9 KB: valors actuals, màximes i mínimes, tendència de pressió, punt de rosada i sèries agrupades cada 15 minuts (i per hores per al gràfic de la vista completa). La pluja per hora es calcula a partir de l'acumulat diari, que es reinicia a mitjanit.
+3. Les plantilles Liquid donen format als números, tradueixen els textos i dibuixen el gràfic amb Highcharts.
 
-Los datos que la estación no envía se muestran como `—`; nunca se interpretan como cero.
+Les dades que l'estació no envia es mostren com a `—`; mai s'interpreten com a zero.
 
-## Estructura del repositorio
+## Estructura del repositori
 
 ```
 src/
-├── settings.yml            # URL de consulta y campos del plugin (estación, idioma)
-├── transform.js            # reduce y calcula los datos
-├── shared.liquid           # traducciones, iconos y función del gráfico
+├── settings.yml            # URL de consulta i camps del plugin (estació, idioma)
+├── transform.js            # redueix i calcula les dades
+├── shared.liquid           # traduccions, icones i funció del gràfic
 ├── full.liquid             # pantalla completa
-├── half_horizontal.liquid  # media pantalla horizontal
-├── half_vertical.liquid    # media pantalla vertical
-└── quadrant.liquid         # cuarto de pantalla
+├── half_horizontal.liquid  # mitja pantalla horitzontal
+├── half_vertical.liquid    # mitja pantalla vertical
+└── quadrant.liquid         # quart de pantalla
 assets/
-└── icon-512.png            # icono del plugin (512×512, fondo blanco)
-docs/screenshots/           # capturas del README
+└── icon-512.png            # icona del plugin (512×512, fons blanc)
+docs/screenshots/           # captures del README
 ```
 
-## Instalación
+## Instal·lació
 
-Crea un plugin privado en TRMNL (*Plugins → Private Plugin*) y copia el contenido de `src/`:
+Crea un plugin privat a TRMNL (*Plugins → Private Plugin*) i copia el contingut de `src/`:
 
-1. **Estrategia**: Polling (GET). En *Polling URL* pega la `polling_url` de `src/settings.yml`.
-2. **Form fields**: pega el bloque `custom_fields` de `src/settings.yml`.
-3. **Transform**: pega `src/transform.js`.
-4. **Markup**: pega cada `.liquid` en su pestaña (*Shared*, *Full*, *Half horizontal*, *Half vertical*, *Quadrant*).
-5. **Framework CSS version**: el diseño está comprobado en el dispositivo con la `3.4.0` (la actual) y con la `2.3.7`. Sirve cualquiera de las dos.
-6. Guarda y elige estación e idioma en los ajustes del plugin.
+1. **Estratègia**: Polling (GET). A *Polling URL* enganxa la `polling_url` de `src/settings.yml`.
+2. **Form fields**: enganxa el bloc `custom_fields` de `src/settings.yml`.
+3. **Transform**: enganxa `src/transform.js`.
+4. **Markup**: enganxa cada `.liquid` a la seva pestanya (*Shared*, *Full*, *Half horizontal*, *Half vertical*, *Quadrant*).
+5. **Framework CSS version**: el disseny està comprovat al dispositiu amb la `3.4.0` (l'actual) i amb la `2.3.7`. Serveix qualsevol de les dues.
+6. Desa i tria estació i idioma als ajustos del plugin.
 
-## Datos y condiciones de uso
+## Dades i condicions d'ús
 
-Los datos proceden de la API de datos abiertos de [meteocerdanyola.com](https://meteocerdanyola.com) (JDServer). Según el propio contrato de la API, la descarga no concede por sí sola una licencia abierta adicional y la reutilización puede requerir autorización: consulta el aviso legal de cada estación antes de redistribuir los datos. La información es orientativa y no sustituye los avisos oficiales.
+Les dades provenen de l'API de dades obertes de [meteocerdanyola.com](https://meteocerdanyola.com) (JDServer). Segons el propi contracte de l'API, la descàrrega no concedeix per si sola una llicència oberta addicional i la reutilització pot requerir autorització: consulta l'avís legal de cada estació abans de redistribuir les dades. La informació és orientativa i no substitueix els avisos oficials.
