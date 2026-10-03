@@ -1,8 +1,20 @@
 # meteocerdanyola.com · plugin para TRMNL
 
+**Castellano** · [Català](README.ca.md)
+
 Plugin privado para [TRMNL](https://usetrmnl.com) (pantalla e-ink) que muestra el tiempo en directo de las estaciones de [meteocerdanyola.com](https://meteocerdanyola.com), en Cerdanyola del Vallès (Barcelona).
 
 Proyecto personal y no oficial: los datos son de meteocerdanyola.com.
+
+## Capturas
+
+![Vista completa](docs/screenshots/full_es.png)
+
+| Media pantalla horizontal | Media pantalla vertical | Cuarto de pantalla |
+|---|---|---|
+| ![Media pantalla horizontal](docs/screenshots/half_horizontal_es.png) | ![Media pantalla vertical](docs/screenshots/half_vertical_es.png) | ![Cuarto de pantalla](docs/screenshots/quadrant_es.png) |
+
+Capturas con datos reales de la estación Ateneu, renderizadas en un navegador: la pantalla real es de 1 bit (blanco y negro).
 
 ## Qué muestra
 
@@ -44,6 +56,9 @@ src/
 ├── half_horizontal.liquid  # media pantalla horizontal
 ├── half_vertical.liquid    # media pantalla vertical
 └── quadrant.liquid         # cuarto de pantalla
+assets/
+└── icon-512.png            # icono del plugin (512×512, fondo blanco)
+docs/screenshots/           # capturas del README
 ```
 
 ## Instalación
