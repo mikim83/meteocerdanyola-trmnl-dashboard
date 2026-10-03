@@ -26,7 +26,7 @@
       <div class="content">
         <span class="label label--small">{{ s_wind }}</span>
         <span class="value value--tnums value--small">{{ now.wind }} km/h</span>
-        <span class="label">{% if now.calm %}{{ s_calm }}{% else %}{{ w_dir }}{% endif %}</span>
+        <span class="label">{{ w_dir }} {{ now.wind_deg }}°{% if now.calm %} · {{ s_calm }}{% endif %}</span>
       </div>
     </div>
     <div class="item">
@@ -42,7 +42,7 @@
       <div class="content">
         <span class="label label--small">{{ s_rain }} 24 h</span>
         <span class="value value--tnums value--small">{{ n_rain_24h }} mm</span>
-        <span class="label">{{ s_today }} {{ n_rain_today }}</span>
+        <span class="label">{{ n_rain_rate }} mm/h</span>
       </div>
     </div>
     <div class="item">

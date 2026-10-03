@@ -116,6 +116,7 @@ function transform(input) {
     hum: fmt(hum, 0),
     dew: fmt(dew, 1),
     wind: fmt(wind, 0),
+    wind_deg: fmt(deg, 0),
     wind_dir: deg == null ? '—' : CARDINALS[Math.round((((deg % 360) + 360) % 360) / 22.5) % 16],
     calm: wind != null && wind < 1,
     pressure: fmt(press, 1),

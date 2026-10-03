@@ -15,6 +15,7 @@
     {%- assign s_gust = "ratxa" -%}
     {%- assign s_pressure = "Pressió" -%}
     {%- assign s_rain = "Pluja" -%}
+    {%- assign s_intensity = "Intensitat" -%}
     {%- assign s_today = "avui" -%}
     {%- assign s_dew = "Rosada" -%}
     {%- assign s_delayed = "retard" -%}
@@ -39,6 +40,7 @@
     {%- assign s_gust = "gust" -%}
     {%- assign s_pressure = "Pressure" -%}
     {%- assign s_rain = "Rain" -%}
+    {%- assign s_intensity = "Intensity" -%}
     {%- assign s_today = "today" -%}
     {%- assign s_dew = "Dew pt" -%}
     {%- assign s_delayed = "delayed" -%}
@@ -62,6 +64,7 @@
     {%- assign s_gust = "racha" -%}
     {%- assign s_pressure = "Presión" -%}
     {%- assign s_rain = "Lluvia" -%}
+    {%- assign s_intensity = "Intensidad" -%}
     {%- assign s_today = "hoy" -%}
     {%- assign s_dew = "Rocío" -%}
     {%- assign s_delayed = "retraso" -%}
@@ -90,6 +93,7 @@
 {%- assign n_pdelta = now.pressure_delta | replace: ".", dec -%}
 {%- assign n_rain_today = now.rain_today | replace: ".", dec -%}
 {%- assign n_rain_24h = day.rain_24h | replace: ".", dec -%}
+{%- assign n_rain_rate = now.rain_rate | replace: ".", dec -%}
 {%- assign n_tmax = day.temp_max | replace: ".", dec -%}
 {%- assign n_tmin = day.temp_min | replace: ".", dec -%}
 
