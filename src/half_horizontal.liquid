@@ -1,0 +1,49 @@
+{%- if no_data -%}
+<div class="layout layout--col layout--center">
+  <span class="title">{{ s_nodata }}</span>
+  <span class="description">{{ site.name }} {{ s_nodata_desc }}</span>
+</div>
+{%- else -%}
+<div class="layout">
+  <div class="grid">
+    <div class="item col--span-3">
+      <div class="meta"></div>
+      <div class="content">
+        <span class="label label--small">{{ s_temp_now }}</span>
+        <span class="value value--tnums value--xxlarge" data-value-fit="true">{{ n_temp }}°</span>
+        <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+      </div>
+    </div>
+
+    <div class="col col--span-6 gap--small">
+      <span class="label label--small">{{ s_last24 }} · {{ s_max }} {{ n_tmax }}° · {{ s_min }} {{ n_tmin }}°</span>
+      <div id="chart-temp" class="w--full h--[130px]"></div>
+    </div>
+
+    <div class="col col--span-3 gap--medium">
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label label--small">{{ s_wind }}</span>
+          <span class="value value--tnums value--small">{{ now.wind }} km/h</span>
+          <span class="label">{% if now.calm %}{{ s_calm }}{% else %}{{ w_dir }}{% endif %}</span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="label label--small">{{ s_rain }} 24 h</span>
+          <span class="value value--tnums value--small">{{ n_rain_24h }} mm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>mcChart('chart-temp', {{ series.temp | json }}, { suffix: '°', tick: 8, size: 12, tickAmount: 3 });</script>
+{%- endif -%}
+
+<div class="title_bar">
+  <img class="image" src="data:image/png;base64,{{ icon_b64 }}">
+  <span class="title">meteocerdanyola.com</span>
+  <span class="instance">{{ site.name }} · {{ observed.time }}{% if observed.stale %} ({{ s_delayed }}){% endif %}</span>
+</div>
