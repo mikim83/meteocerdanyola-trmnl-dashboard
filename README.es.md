@@ -61,7 +61,12 @@ src/
 assets/
 └── icon-512.png            # icono del plugin (512×512, fondo blanco)
 docs/screenshots/           # capturas del README
+.trmnlp.yml                 # configuración de trmnlp (la crea la sincronización de TRMNL)
 ```
+
+## Sincronización con TRMNL
+
+Este repositorio está conectado a TRMNL: cuando se guardan cambios en el editor del plugin, el bot `trmnl-sync` los sube directamente a `main` con el mensaje «Updated from TRMNL». Por eso `src/settings.yml` tiene el formato completo que exporta TRMNL (con el identificador del plugin y los ajustes por defecto) y existe `.trmnlp.yml`, la configuración de trmnlp, la herramienta de TRMNL para previsualizar en local.
 
 ## Instalación
 
