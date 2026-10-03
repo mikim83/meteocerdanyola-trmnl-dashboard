@@ -8,6 +8,7 @@
     {%- assign s_feels = "Sensació" -%}
     {%- assign s_hum = "Humitat" -%}
     {%- assign s_last24 = "Últimes 24 h" -%}
+    {%- assign s_rain_bars = "barres: pluja per hora (mm)" -%}
     {%- assign s_max = "Màx" -%}
     {%- assign s_min = "Mín" -%}
     {%- assign s_wind = "Vent" -%}
@@ -15,8 +16,10 @@
     {%- assign s_gust = "ratxa" -%}
     {%- assign s_pressure = "Pressió" -%}
     {%- assign s_rain = "Pluja" -%}
+    {%- assign s_intensity = "Intensitat" -%}
     {%- assign s_today = "avui" -%}
     {%- assign s_dew = "Rosada" -%}
+    {%- assign s_temp = "Temperatura actual" -%}
     {%- assign s_delayed = "retard" -%}
     {%- assign s_nodata_short = "Sense dades" -%}
     {%- assign s_rising_fast = "Puja ràpid" -%}
@@ -32,6 +35,7 @@
     {%- assign s_feels = "Feels like" -%}
     {%- assign s_hum = "Humidity" -%}
     {%- assign s_last24 = "Last 24 h" -%}
+    {%- assign s_rain_bars = "bars: rain per hour (mm)" -%}
     {%- assign s_max = "Max" -%}
     {%- assign s_min = "Min" -%}
     {%- assign s_wind = "Wind" -%}
@@ -39,8 +43,10 @@
     {%- assign s_gust = "gust" -%}
     {%- assign s_pressure = "Pressure" -%}
     {%- assign s_rain = "Rain" -%}
+    {%- assign s_intensity = "Intensity" -%}
     {%- assign s_today = "today" -%}
     {%- assign s_dew = "Dew pt" -%}
+    {%- assign s_temp = "Current temperature" -%}
     {%- assign s_delayed = "delayed" -%}
     {%- assign s_nodata_short = "No data" -%}
     {%- assign s_rising_fast = "Rising fast" -%}
@@ -55,6 +61,7 @@
     {%- assign s_feels = "Sensación" -%}
     {%- assign s_hum = "Humedad" -%}
     {%- assign s_last24 = "Últimas 24 h" -%}
+    {%- assign s_rain_bars = "barras: lluvia por hora (mm)" -%}
     {%- assign s_max = "Máx" -%}
     {%- assign s_min = "Mín" -%}
     {%- assign s_wind = "Viento" -%}
@@ -62,8 +69,10 @@
     {%- assign s_gust = "racha" -%}
     {%- assign s_pressure = "Presión" -%}
     {%- assign s_rain = "Lluvia" -%}
+    {%- assign s_intensity = "Intensidad" -%}
     {%- assign s_today = "hoy" -%}
     {%- assign s_dew = "Rocío" -%}
+    {%- assign s_temp = "Temperatura actual" -%}
     {%- assign s_delayed = "retraso" -%}
     {%- assign s_nodata_short = "Sin datos" -%}
     {%- assign s_rising_fast = "Sube rápido" -%}
@@ -72,6 +81,10 @@
     {%- assign s_falling = "Baja" -%}
     {%- assign s_falling_fast = "Baja rápido" -%}
 {%- endcase -%}
+
+{%- capture ic_tmax -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9a4 4 0 0 0-2 7.5"/><path d="M12 3v2"/><path d="m6.6 18.4-1.4 1.4"/><path d="M20 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/><path d="M4 13H2"/><path d="M6.34 7.34 4.93 5.93"/></svg>{%- endcapture -%}
+{%- capture ic_tmin -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 20-1.25-2.5L6 18"/><path d="M10 4 8.75 6.5 6 6"/><path d="M10.585 15H10"/><path d="M2 12h6.5L10 9"/><path d="M20 14.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"/><path d="m4 10 1.5 2L4 14"/><path d="m7 21 3-6-1.5-3"/><path d="m7 3 3 6-2.5 3"/></svg>{%- endcapture -%}
+{%- capture ic_thermo -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>{%- endcapture -%}
 
 {%- case now.pressure_trend -%}
   {%- when "rising_fast" -%}{%- assign s_trend = s_rising_fast -%}
@@ -90,6 +103,7 @@
 {%- assign n_pdelta = now.pressure_delta | replace: ".", dec -%}
 {%- assign n_rain_today = now.rain_today | replace: ".", dec -%}
 {%- assign n_rain_24h = day.rain_24h | replace: ".", dec -%}
+{%- assign n_rain_rate = now.rain_rate | replace: ".", dec -%}
 {%- assign n_tmax = day.temp_max | replace: ".", dec -%}
 {%- assign n_tmin = day.temp_min | replace: ".", dec -%}
 
@@ -100,31 +114,61 @@
 {%- capture ic_drop -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>{%- endcapture -%}
 
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
+<script src="https://trmnl.com/js/highcharts/12.3.0/pattern-fill.js"></script>
 <script>
-  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, suffix, tick (h), size (px de fuente)
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente), labelEvery (h), rain ([[ms, mm], ...] en barras con eje propio)
   window.mcChart = function (id, data, opts) {
     opts = opts || {};
     var size = (opts.size || 14) + 'px';
+    var pts = data.map(function (d) { return { x: d[0], y: d[1] }; });
+    if (opts.labelEvery && data.length) {
+      var step = opts.labelEvery * 3600 * 1000, end = data[data.length - 1][0];
+      for (var t = Math.ceil(data[0][0] / step) * step; t <= end; t += step) {
+        var best = 0;
+        data.forEach(function (d, i) { if (Math.abs(d[0] - t) < Math.abs(data[best][0] - t)) best = i; });
+        if (Math.abs(data[best][0] - t) <= 35 * 60 * 1000) {
+          pts[best].marker = { enabled: true, radius: 5, fillColor: '#000', lineWidth: 0 };
+          pts[best].dataLabels = {
+            enabled: true, format: '{y:.1f}' + (opts.suffix || ''), y: -12, allowOverlap: true, crop: false, overflow: 'allow',
+            backgroundColor: '#fff', padding: 2, borderRadius: 3,
+            style: { fontSize: size, fontWeight: 'bold', color: '#000', textOutline: 'none' }
+          };
+        }
+      }
+    }
+    var rainPts = null, rainMax = 3;
+    if (opts.rain && opts.rain.length) {
+      rainPts = opts.rain.map(function (d) {
+        var p = { x: d[0], y: d[1] };
+        if (d[1] >= 0.5) p.dataLabels = { enabled: true, format: '{y:.1f}', y: -2, allowOverlap: true, crop: false, overflow: 'allow', style: { fontSize: '11px', fontWeight: 'bold', color: '#000', textOutline: 'none' } };
+        rainMax = Math.max(rainMax, d[1] * 2.8);
+        return p;
+      });
+    }
     var draw = function () {
       Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
       Highcharts.chart(id, {
-        chart: { type: opts.type || 'line', backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 0] },
+        chart: { height: opts.height, backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 12] },
         title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
         xAxis: {
           type: 'datetime', lineColor: '#000', tickColor: '#000', tickLength: 4, gridLineWidth: 0,
           tickInterval: (opts.tick || 6) * 3600 * 1000,
           labels: { format: '{value:%H}h', style: { fontSize: size, color: '#000' } }
         },
-        yAxis: {
+        yAxis: [{
           title: { text: null }, gridLineWidth: 1, gridLineColor: '#000', gridLineDashStyle: 'ShortDot',
-          tickAmount: opts.tickAmount || 4, min: opts.min, softMin: opts.softMin, softMax: opts.softMax,
+          tickAmount: opts.tickAmount || 4, min: opts.min, maxPadding: opts.labelEvery ? 0.2 : undefined, softMin: opts.softMin, softMax: opts.softMax,
           labels: { format: '{value}' + (opts.suffix || ''), style: { fontSize: size, color: '#000' } }
-        },
+        }].concat(rainPts ? [{ title: { text: null }, visible: false, opposite: true, min: 0, max: rainMax, gridLineWidth: 0 }] : []),
         plotOptions: {
           series: { animation: false, enableMouseTracking: false, color: '#000', lineWidth: 4, marker: { enabled: false } },
           column: { borderWidth: 0, pointPadding: 0.05, groupPadding: 0, color: '#000' }
         },
-        series: [{ data: data }]
+        series: (rainPts ? [{
+          type: 'column', yAxis: 1, data: rainPts, zIndex: 0, pointPadding: 0.08, groupPadding: 0,
+          color: { pattern: { image: 'https://trmnl.com/images/grayscale/gray-5.png', width: 12, height: 12 } },
+          borderColor: '#000', borderWidth: 1.5
+        }] : []).concat([{ type: 'line', data: pts, zIndex: 2 }])
       });
     };
     if (window.Highcharts) draw(); else window.addEventListener('load', draw);

@@ -50,8 +50,8 @@ function transform(input) {
   }
 
   // --- series agrupadas en cubos de BUCKET_MIN minutos (media) ---
-  function bucketSeries(key, decimals, agg) {
-    var step = BUCKET_MIN * 60000, map = {}, order = [];
+  function bucketSeries(key, decimals, agg, minutes) {
+    var step = (minutes || BUCKET_MIN) * 60000, map = {}, order = [];
     rows.forEach(function (r) {
       if (!isNum(r[key])) return;
       var b = Math.floor(r.ts / step) * step;
@@ -116,6 +116,7 @@ function transform(input) {
     hum: fmt(hum, 0),
     dew: fmt(dew, 1),
     wind: fmt(wind, 0),
+    wind_deg: fmt(deg, 0),
     wind_dir: deg == null ? '—' : CARDINALS[Math.round((((deg % 360) + 360) % 360) / 22.5) % 16],
     calm: wind != null && wind < 1,
     pressure: fmt(press, 1),
@@ -133,6 +134,7 @@ function transform(input) {
   };
   base.series = {
     temp: bucketSeries('temperature_c', 1, 'avg'),
+    temp_hourly: bucketSeries('temperature_c', 1, 'avg', 60),
     hum: bucketSeries('humidity_pct', 0, 'avg'),
     pressure: bucketSeries('pressure_hpa', 1, 'avg'),
     wind: bucketSeries('wind_speed_kmh', 1, 'max'),

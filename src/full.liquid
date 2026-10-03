@@ -7,21 +7,27 @@
 <div class="layout layout--col gap--space-between">
 
   <div class="grid">
-    <div class="item col--span-4">
-      <div class="meta"></div>
-      <div class="content">
-        <span class="label label--small">{{ s_temp_now }}</span>
-        <span class="value value--tnums value--xxxlarge" data-value-fit="true">{{ n_temp }}°</span>
-        <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+    <div class="col gap--small col--span-4">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_thermo }}<span class="label label--underline">{{ s_temp }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--xxxlarge" data-value-fit="true">{{ n_temp }}°</span>
+          <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+        </div>
+      </div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_tmax }}<span class="label">{{ s_max }} 24 h: {{ n_tmax }}° ({{ day.temp_max_time }})</span></div>
+          <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_tmin }}<span class="label">{{ s_min }} 24 h: {{ n_tmin }}° ({{ day.temp_min_time }})</span></div>
+        </div>
       </div>
     </div>
 
     <div class="col col--span-8 gap--small">
-      <div class="flex flex--row flex--between">
-        <span class="label label--small">{{ s_last24 }}</span>
-        <span class="label label--small">{{ s_max }} {{ n_tmax }}° ({{ day.temp_max_time }}) · {{ s_min }} {{ n_tmin }}° ({{ day.temp_min_time }})</span>
-      </div>
-      <div id="chart-temp" class="w--full h--[190px]"></div>
+      <span class="label label--small">{{ s_last24 }} · {{ s_rain_bars }}</span>
+      <div id="chart-temp" class="w--full"></div>
     </div>
   </div>
 
@@ -34,7 +40,19 @@
         <div class="meta"></div>
         <div class="content">
           <span class="value value--tnums value--large">{{ now.wind }}<span class="label"> km/h</span></span>
-          <span class="label">{% if now.calm %}{{ s_calm }}{% else %}{{ w_dir }}{% endif %} · {{ s_gust }} {{ day.wind_max }}</span>
+          <span class="label">{{ w_dir }} {{ now.wind_deg }}°{% if now.calm %} · {{ s_calm }}{% endif %}</span>
+          <span class="label">{{ s_gust }} {{ day.wind_max }} km/h</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_drop }}<span class="label label--underline">{{ s_hum }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
+          <span class="label">{{ s_dew }} {{ n_dew }}°</span>
         </div>
       </div>
     </div>
@@ -56,25 +74,15 @@
         <div class="meta"></div>
         <div class="content">
           <span class="value value--tnums value--large">{{ n_rain_24h }}<span class="label"> mm</span></span>
-          <span class="label">24 h · {{ s_today }} {{ n_rain_today }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="col gap--small">
-      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_drop }}<span class="label label--underline">{{ s_hum }}</span></div>
-      <div class="item">
-        <div class="meta"></div>
-        <div class="content">
-          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
-          <span class="label">{{ s_dew }} {{ n_dew }}°</span>
+          <span class="label">{{ s_last24 }}</span>
+          <span class="label">{{ s_intensity }} {{ n_rain_rate }} mm/h</span>
         </div>
       </div>
     </div>
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp | json }}, { suffix: '°', tick: 6, size: 14 });</script>
+<script>mcChart('chart-temp', {{ series.temp_hourly | json }}, { height: 190, suffix: '°', tick: 6, size: 14, labelEvery: 6, rain: {{ series.rain_hourly | json }} });</script>
 {%- endif -%}
 
 <div class="title_bar">
