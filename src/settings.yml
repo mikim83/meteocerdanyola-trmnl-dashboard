@@ -51,5 +51,5 @@ custom_fields:
   - 'English: en'
   default: es
 name: meteocerdanyola.com
-description:
-refresh_interval:
+description: ''
+refresh_interval: 15
