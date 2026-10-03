@@ -18,7 +18,7 @@
     {%- assign s_intensity = "Intensitat" -%}
     {%- assign s_today = "avui" -%}
     {%- assign s_dew = "Rosada" -%}
-    {%- assign s_temp = "Temperatura" -%}
+    {%- assign s_temp = "Temperatura actual" -%}
     {%- assign s_delayed = "retard" -%}
     {%- assign s_nodata_short = "Sense dades" -%}
     {%- assign s_rising_fast = "Puja ràpid" -%}
@@ -44,7 +44,7 @@
     {%- assign s_intensity = "Intensity" -%}
     {%- assign s_today = "today" -%}
     {%- assign s_dew = "Dew pt" -%}
-    {%- assign s_temp = "Temperature" -%}
+    {%- assign s_temp = "Current temperature" -%}
     {%- assign s_delayed = "delayed" -%}
     {%- assign s_nodata_short = "No data" -%}
     {%- assign s_rising_fast = "Rising fast" -%}
@@ -69,7 +69,7 @@
     {%- assign s_intensity = "Intensidad" -%}
     {%- assign s_today = "hoy" -%}
     {%- assign s_dew = "Rocío" -%}
-    {%- assign s_temp = "Temperatura" -%}
+    {%- assign s_temp = "Temperatura actual" -%}
     {%- assign s_delayed = "retraso" -%}
     {%- assign s_nodata_short = "Sin datos" -%}
     {%- assign s_rising_fast = "Sube rápido" -%}
@@ -110,10 +110,26 @@
 
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
 <script>
-  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente)
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente), labelEvery (h)
   window.mcChart = function (id, data, opts) {
     opts = opts || {};
     var size = (opts.size || 14) + 'px';
+    var pts = data.map(function (d) { return { x: d[0], y: d[1] }; });
+    if (opts.labelEvery && data.length) {
+      var step = opts.labelEvery * 3600 * 1000, end = data[data.length - 1][0];
+      for (var t = Math.ceil(data[0][0] / step) * step; t <= end; t += step) {
+        var best = 0;
+        data.forEach(function (d, i) { if (Math.abs(d[0] - t) < Math.abs(data[best][0] - t)) best = i; });
+        if (Math.abs(data[best][0] - t) <= 20 * 60 * 1000) {
+          pts[best].marker = { enabled: true, radius: 5, fillColor: '#000', lineWidth: 0 };
+          pts[best].dataLabels = {
+            enabled: true, format: '{y:.1f}' + (opts.suffix || ''), y: -12, allowOverlap: true, crop: false, overflow: 'allow',
+            backgroundColor: '#fff', padding: 2, borderRadius: 3,
+            style: { fontSize: size, fontWeight: 'bold', color: '#000', textOutline: 'none' }
+          };
+        }
+      }
+    }
     var draw = function () {
       Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
       Highcharts.chart(id, {
@@ -126,14 +142,14 @@
         },
         yAxis: {
           title: { text: null }, gridLineWidth: 1, gridLineColor: '#000', gridLineDashStyle: 'ShortDot',
-          tickAmount: opts.tickAmount || 4, min: opts.min, softMin: opts.softMin, softMax: opts.softMax,
+          tickAmount: opts.tickAmount || 4, min: opts.min, maxPadding: opts.labelEvery ? 0.2 : undefined, softMin: opts.softMin, softMax: opts.softMax,
           labels: { format: '{value}' + (opts.suffix || ''), style: { fontSize: size, color: '#000' } }
         },
         plotOptions: {
           series: { animation: false, enableMouseTracking: false, color: '#000', lineWidth: 4, marker: { enabled: false } },
           column: { borderWidth: 0, pointPadding: 0.05, groupPadding: 0, color: '#000' }
         },
-        series: [{ data: data }]
+        series: [{ data: pts }]
       });
     };
     if (window.Highcharts) draw(); else window.addEventListener('load', draw);
