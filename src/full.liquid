@@ -1,0 +1,84 @@
+{%- if no_data -%}
+<div class="layout layout--col layout--center">
+  <span class="title">{{ s_nodata }}</span>
+  <span class="description">{{ site.name }} {{ s_nodata_desc }}</span>
+</div>
+{%- else -%}
+<div class="layout layout--col gap--space-between">
+
+  <div class="grid">
+    <div class="item col--span-4">
+      <div class="meta"></div>
+      <div class="content">
+        <span class="label label--small">{{ s_temp_now }}</span>
+        <span class="value value--tnums value--xxxlarge" data-value-fit="true">{{ n_temp }}°</span>
+        <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+      </div>
+    </div>
+
+    <div class="col col--span-8 gap--small">
+      <div class="flex flex--row flex--between">
+        <span class="label label--small">{{ s_last24 }}</span>
+        <span class="label label--small">{{ s_max }} {{ n_tmax }}° ({{ day.temp_max_time }}) · {{ s_min }} {{ n_tmin }}° ({{ day.temp_min_time }})</span>
+      </div>
+      <div id="chart-temp" class="w--full h--[190px]"></div>
+    </div>
+  </div>
+
+  <div class="w--full b-h-gray-5"></div>
+
+  <div class="grid grid--cols-4">
+    <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_wind }}<span class="label label--underline">{{ s_wind }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ now.wind }}<span class="label"> km/h</span></span>
+          <span class="label">{% if now.calm %}{{ s_calm }}{% else %}{{ w_dir }}{% endif %} · {{ s_gust }} {{ day.wind_max }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_gauge }}<span class="label label--underline">{{ s_pressure }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ now.pressure_int }}</span>
+          <span class="label">hPa · {{ s_trend }} ({{ n_pdelta }})</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_rain }}<span class="label label--underline">{{ s_rain }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ n_rain_24h }}<span class="label"> mm</span></span>
+          <span class="label">24 h · {{ s_today }} {{ n_rain_today }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_drop }}<span class="label label--underline">{{ s_hum }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
+          <span class="label">{{ s_dew }} {{ n_dew }}°</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>mcChart('chart-temp', {{ series.temp | json }}, { suffix: '°', tick: 6, size: 14 });</script>
+{%- endif -%}
+
+<div class="title_bar">
+  <img class="image" src="data:image/png;base64,{{ icon_b64 }}">
+  <span class="title">meteocerdanyola.com</span>
+  <span class="instance">{{ site.name }} · {{ observed.time }}{% if observed.stale %} ({{ s_delayed }}){% endif %}</span>
+</div>

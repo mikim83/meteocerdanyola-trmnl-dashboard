@@ -1,0 +1,24 @@
+{%- if no_data -%}
+<div class="layout layout--col layout--center">
+  <span class="title title--small">{{ s_nodata_short }}</span>
+  <span class="description description--small">{{ site.name }}</span>
+</div>
+{%- else -%}
+<div class="layout layout--col layout--center">
+  <div class="item">
+    <div class="meta"></div>
+    <div class="content">
+      <span class="label label--small">{{ observed.time }}{% if observed.stale %} ({{ s_delayed }}){% endif %}</span>
+      <span class="value value--tnums value--xxlarge" data-value-fit="true">{{ n_temp }}°</span>
+      <span class="label">{{ s_feels }} {{ n_feels }}° · {{ s_hum }} {{ now.hum }}%</span>
+      <span class="label label--small">{{ s_wind }} {{ now.wind }} km/h · {{ s_rain }} {{ n_rain_24h }} mm</span>
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
+<div class="title_bar">
+  <img class="image" src="data:image/png;base64,{{ icon_b64 }}">
+  <span class="title">meteocerdanyola.com</span>
+  <span class="instance">{{ site.name }}</span>
+</div>

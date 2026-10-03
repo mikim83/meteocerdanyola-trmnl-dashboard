@@ -1,0 +1,132 @@
+{%- assign lang = language | default: "es" -%}
+{%- assign dec = "," -%}
+{%- case lang -%}
+  {%- when "ca" -%}
+    {%- assign s_nodata = "Sense dades de l'estació" -%}
+    {%- assign s_nodata_desc = "no ha enviat lectures en les últimes 24 h." -%}
+    {%- assign s_temp_now = "Temperatura ara" -%}
+    {%- assign s_feels = "Sensació" -%}
+    {%- assign s_hum = "Humitat" -%}
+    {%- assign s_last24 = "Últimes 24 h" -%}
+    {%- assign s_max = "Màx" -%}
+    {%- assign s_min = "Mín" -%}
+    {%- assign s_wind = "Vent" -%}
+    {%- assign s_calm = "Calma" -%}
+    {%- assign s_gust = "ratxa" -%}
+    {%- assign s_pressure = "Pressió" -%}
+    {%- assign s_rain = "Pluja" -%}
+    {%- assign s_today = "avui" -%}
+    {%- assign s_dew = "Rosada" -%}
+    {%- assign s_delayed = "retard" -%}
+    {%- assign s_nodata_short = "Sense dades" -%}
+    {%- assign s_rising_fast = "Puja ràpid" -%}
+    {%- assign s_rising = "Puja" -%}
+    {%- assign s_steady = "Estable" -%}
+    {%- assign s_falling = "Baixa" -%}
+    {%- assign s_falling_fast = "Baixa ràpid" -%}
+  {%- when "en" -%}
+    {%- assign dec = "." -%}
+    {%- assign s_nodata = "No station data" -%}
+    {%- assign s_nodata_desc = "has not reported readings in the last 24 h." -%}
+    {%- assign s_temp_now = "Temperature now" -%}
+    {%- assign s_feels = "Feels like" -%}
+    {%- assign s_hum = "Humidity" -%}
+    {%- assign s_last24 = "Last 24 h" -%}
+    {%- assign s_max = "Max" -%}
+    {%- assign s_min = "Min" -%}
+    {%- assign s_wind = "Wind" -%}
+    {%- assign s_calm = "Calm" -%}
+    {%- assign s_gust = "gust" -%}
+    {%- assign s_pressure = "Pressure" -%}
+    {%- assign s_rain = "Rain" -%}
+    {%- assign s_today = "today" -%}
+    {%- assign s_dew = "Dew pt" -%}
+    {%- assign s_delayed = "delayed" -%}
+    {%- assign s_nodata_short = "No data" -%}
+    {%- assign s_rising_fast = "Rising fast" -%}
+    {%- assign s_rising = "Rising" -%}
+    {%- assign s_steady = "Steady" -%}
+    {%- assign s_falling = "Falling" -%}
+    {%- assign s_falling_fast = "Falling fast" -%}
+  {%- else -%}
+    {%- assign s_nodata = "Sin datos de la estación" -%}
+    {%- assign s_nodata_desc = "no ha enviado lecturas en las últimas 24 h." -%}
+    {%- assign s_temp_now = "Temperatura ahora" -%}
+    {%- assign s_feels = "Sensación" -%}
+    {%- assign s_hum = "Humedad" -%}
+    {%- assign s_last24 = "Últimas 24 h" -%}
+    {%- assign s_max = "Máx" -%}
+    {%- assign s_min = "Mín" -%}
+    {%- assign s_wind = "Viento" -%}
+    {%- assign s_calm = "Calma" -%}
+    {%- assign s_gust = "racha" -%}
+    {%- assign s_pressure = "Presión" -%}
+    {%- assign s_rain = "Lluvia" -%}
+    {%- assign s_today = "hoy" -%}
+    {%- assign s_dew = "Rocío" -%}
+    {%- assign s_delayed = "retraso" -%}
+    {%- assign s_nodata_short = "Sin datos" -%}
+    {%- assign s_rising_fast = "Sube rápido" -%}
+    {%- assign s_rising = "Sube" -%}
+    {%- assign s_steady = "Estable" -%}
+    {%- assign s_falling = "Baja" -%}
+    {%- assign s_falling_fast = "Baja rápido" -%}
+{%- endcase -%}
+
+{%- case now.pressure_trend -%}
+  {%- when "rising_fast" -%}{%- assign s_trend = s_rising_fast -%}
+  {%- when "rising" -%}{%- assign s_trend = s_rising -%}
+  {%- when "steady" -%}{%- assign s_trend = s_steady -%}
+  {%- when "falling" -%}{%- assign s_trend = s_falling -%}
+  {%- when "falling_fast" -%}{%- assign s_trend = s_falling_fast -%}
+  {%- else -%}{%- assign s_trend = "—" -%}
+{%- endcase -%}
+
+{%- assign w_dir = now.wind_dir -%}
+{%- if lang == "en" -%}{%- assign w_dir = now.wind_dir | replace: "O", "W" -%}{%- endif -%}
+{%- assign n_temp = now.temp | replace: ".", dec -%}
+{%- assign n_feels = now.feels | replace: ".", dec -%}
+{%- assign n_dew = now.dew | replace: ".", dec -%}
+{%- assign n_pdelta = now.pressure_delta | replace: ".", dec -%}
+{%- assign n_rain_today = now.rain_today | replace: ".", dec -%}
+{%- assign n_rain_24h = day.rain_24h | replace: ".", dec -%}
+{%- assign n_tmax = day.temp_max | replace: ".", dec -%}
+{%- assign n_tmin = day.temp_min | replace: ".", dec -%}
+
+{%- capture icon_b64 -%}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{%- endcapture -%}
+{%- capture ic_wind -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>{%- endcapture -%}
+{%- capture ic_gauge -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>{%- endcapture -%}
+{%- capture ic_rain -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>{%- endcapture -%}
+{%- capture ic_drop -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>{%- endcapture -%}
+
+<script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
+<script>
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, suffix, tick (h), size (px de fuente)
+  window.mcChart = function (id, data, opts) {
+    opts = opts || {};
+    var size = (opts.size || 14) + 'px';
+    var draw = function () {
+      Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
+      Highcharts.chart(id, {
+        chart: { type: opts.type || 'line', backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 0] },
+        title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
+        xAxis: {
+          type: 'datetime', lineColor: '#000', tickColor: '#000', tickLength: 4, gridLineWidth: 0,
+          tickInterval: (opts.tick || 6) * 3600 * 1000,
+          labels: { format: '{value:%H}h', style: { fontSize: size, color: '#000' } }
+        },
+        yAxis: {
+          title: { text: null }, gridLineWidth: 1, gridLineColor: '#000', gridLineDashStyle: 'ShortDot',
+          tickAmount: opts.tickAmount || 4, min: opts.min, softMin: opts.softMin, softMax: opts.softMax,
+          labels: { format: '{value}' + (opts.suffix || ''), style: { fontSize: size, color: '#000' } }
+        },
+        plotOptions: {
+          series: { animation: false, enableMouseTracking: false, color: '#000', lineWidth: 4, marker: { enabled: false } },
+          column: { borderWidth: 0, pointPadding: 0.05, groupPadding: 0, color: '#000' }
+        },
+        series: [{ data: data }]
+      });
+    };
+    if (window.Highcharts) draw(); else window.addEventListener('load', draw);
+  };
+</script>
