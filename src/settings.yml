@@ -37,18 +37,18 @@ custom_fields:
   name: Estación meteorológica
   description: Estación de meteocerdanyola.com de la que se muestran los datos.
   options:
-  - 'Cerdanyola Ateneu: cerdanyola_ateneu'
-  - 'Cerdanyola Centre: cerdanyola_centre'
-  - 'Cerdanyola Montflorit: cerdanyola_montflorit'
+  - Cerdanyola Ateneu: cerdanyola_ateneu
+  - Cerdanyola Centre: cerdanyola_centre
+  - Cerdanyola Montflorit: cerdanyola_montflorit
   default: cerdanyola_ateneu
 - keyname: language
   field_type: select
   name: Idioma
   description: Idioma de los textos de la pantalla.
   options:
-  - 'Català: ca'
-  - 'Castellano: es'
-  - 'English: en'
+  - Català: ca
+  - Castellano: es
+  - English: en
   default: es
 name: meteocerdanyola.com
 description: meteocerdanyola.com dashboard
