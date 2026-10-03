@@ -116,7 +116,7 @@
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
 <script src="https://trmnl.com/js/highcharts/12.3.0/pattern-fill.js"></script>
 <script>
-  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente), labelEvery (h), rain ([[ms, mm], ...] en barras con eje propio)
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente), labelEvery (h), rain ([[ms, mm], ...] en barras con eje propio), fill (el gráfico ocupa el espacio libre de la vista)
   window.mcChart = function (id, data, opts) {
     opts = opts || {};
     var size = (opts.size || 14) + 'px';
@@ -147,7 +147,7 @@
     }
     var draw = function () {
       Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
-      Highcharts.chart(id, {
+      var chart = Highcharts.chart(id, {
         chart: { height: opts.height, backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 12] },
         title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
         xAxis: {
@@ -170,6 +170,16 @@
           borderColor: '#000', borderWidth: 1.5
         }] : []).concat([{ type: 'line', data: pts, zIndex: 2 }])
       });
+      // Ajusta la altura al espacio libre de la vista (pantallas de distinto tamaño).
+      var fit = function () {
+        var layout = document.getElementById(id).closest('.layout');
+        if (!layout) return;
+        var used = 0;
+        for (var i = 0; i < layout.children.length; i++) used += layout.children[i].offsetHeight;
+        var h = Math.max(60, Math.round(chart.chartHeight + layout.clientHeight - used - 18));
+        if (Math.abs(h - chart.chartHeight) > 1) chart.setSize(null, h, false);
+      };
+      if (opts.fill) { fit(); window.addEventListener('load', fit); }
     };
     if (window.Highcharts) draw(); else window.addEventListener('load', draw);
   };

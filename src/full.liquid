@@ -82,7 +82,7 @@
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp_hourly | json }}, { height: 190, suffix: '°', tick: 6, size: 14, labelEvery: 6, rain: {{ series.rain_hourly | json }} });</script>
+<script>mcChart('chart-temp', {{ series.temp_hourly | json }}, { height: 190, fill: true, suffix: '°', tick: 6, size: 14, labelEvery: 6, rain: {{ series.rain_hourly | json }} });</script>
 {%- endif -%}
 
 <div class="title_bar">

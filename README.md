@@ -27,6 +27,8 @@ Capturas con datos reales de la estación Ateneu, renderizadas en un navegador: 
 
 Incluye las cuatro vistas de TRMNL: pantalla completa, media pantalla horizontal, media pantalla vertical y cuarto de pantalla.
 
+Se adapta al tamaño de la pantalla (probado en la normal, de 800×480 y 1 bit, y en la TRMNX, de 1040×780 y escala de grises): el gráfico ocupa el espacio vertical que sobra.
+
 ## Ajustes del plugin
 
 | Campo | Valores | Por defecto |
