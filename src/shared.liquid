@@ -18,6 +18,17 @@
     {%- assign s_intensity = "Intensitat" -%}
     {%- assign s_today = "avui" -%}
     {%- assign s_dew = "Rosada" -%}
+    {%- assign s_temp = "Temperatura" -%}
+    {%- assign s_sky_clear_day = "Serè" -%}
+    {%- assign s_sky_clear_night = "Serè" -%}
+    {%- assign s_sky_partly_day = "Poc ennuvolat" -%}
+    {%- assign s_sky_partly_night = "Poc ennuvolat" -%}
+    {%- assign s_sky_cloudy = "Ennuvolat" -%}
+    {%- assign s_sky_fog = "Boira" -%}
+    {%- assign s_sky_drizzle = "Plugim" -%}
+    {%- assign s_sky_rain = "Pluja" -%}
+    {%- assign s_sky_heavy_rain = "Pluja forta" -%}
+    {%- assign s_sky_snow = "Neu" -%}
     {%- assign s_delayed = "retard" -%}
     {%- assign s_nodata_short = "Sense dades" -%}
     {%- assign s_rising_fast = "Puja ràpid" -%}
@@ -43,6 +54,17 @@
     {%- assign s_intensity = "Intensity" -%}
     {%- assign s_today = "today" -%}
     {%- assign s_dew = "Dew pt" -%}
+    {%- assign s_temp = "Temperature" -%}
+    {%- assign s_sky_clear_day = "Clear" -%}
+    {%- assign s_sky_clear_night = "Clear" -%}
+    {%- assign s_sky_partly_day = "Partly cloudy" -%}
+    {%- assign s_sky_partly_night = "Partly cloudy" -%}
+    {%- assign s_sky_cloudy = "Cloudy" -%}
+    {%- assign s_sky_fog = "Fog" -%}
+    {%- assign s_sky_drizzle = "Drizzle" -%}
+    {%- assign s_sky_rain = "Rain" -%}
+    {%- assign s_sky_heavy_rain = "Heavy rain" -%}
+    {%- assign s_sky_snow = "Snow" -%}
     {%- assign s_delayed = "delayed" -%}
     {%- assign s_nodata_short = "No data" -%}
     {%- assign s_rising_fast = "Rising fast" -%}
@@ -67,6 +89,17 @@
     {%- assign s_intensity = "Intensidad" -%}
     {%- assign s_today = "hoy" -%}
     {%- assign s_dew = "Rocío" -%}
+    {%- assign s_temp = "Temperatura" -%}
+    {%- assign s_sky_clear_day = "Despejado" -%}
+    {%- assign s_sky_clear_night = "Despejado" -%}
+    {%- assign s_sky_partly_day = "Poco nublado" -%}
+    {%- assign s_sky_partly_night = "Poco nublado" -%}
+    {%- assign s_sky_cloudy = "Nublado" -%}
+    {%- assign s_sky_fog = "Niebla" -%}
+    {%- assign s_sky_drizzle = "Llovizna" -%}
+    {%- assign s_sky_rain = "Lluvia" -%}
+    {%- assign s_sky_heavy_rain = "Lluvia fuerte" -%}
+    {%- assign s_sky_snow = "Nieve" -%}
     {%- assign s_delayed = "retraso" -%}
     {%- assign s_nodata_short = "Sin datos" -%}
     {%- assign s_rising_fast = "Sube rápido" -%}
@@ -76,6 +109,18 @@
     {%- assign s_falling_fast = "Baja rápido" -%}
 {%- endcase -%}
 
+{%- capture svg_big -%}<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{%- endcapture -%}
+{%- capture ic_sun -%}{{ svg_big }}<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>{%- endcapture -%}
+{%- capture ic_moon -%}{{ svg_big }}<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>{%- endcapture -%}
+{%- capture ic_cloud -%}{{ svg_big }}<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>{%- endcapture -%}
+{%- capture ic_cloud_sun -%}{{ svg_big }}<path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>{%- endcapture -%}
+{%- capture ic_cloud_moon -%}{{ svg_big }}<path d="M13 16a3 3 0 0 1 0 6H7a5 5 0 1 1 4.9-6Z"/><path d="M18.376 14.512a6 6 0 0 0 3.461-4.127c.148-.625-.659-.97-1.248-.714a4 4 0 0 1-5.259-5.26c.255-.589-.09-1.395-.716-1.248a6 6 0 0 0-4.594 5.36"/></svg>{%- endcapture -%}
+{%- capture ic_fog -%}{{ svg_big }}<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 17H7"/><path d="M17 21H9"/></svg>{%- endcapture -%}
+{%- capture ic_drizzle -%}{{ svg_big }}<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 19v1"/><path d="M8 14v1"/><path d="M16 19v1"/><path d="M16 14v1"/><path d="M12 21v1"/><path d="M12 16v1"/></svg>{%- endcapture -%}
+{%- capture ic_rain_big -%}{{ svg_big }}<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></svg>{%- endcapture -%}
+{%- capture ic_snow -%}{{ svg_big }}<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M8 15h.01"/><path d="M8 19h.01"/><path d="M12 17h.01"/><path d="M12 21h.01"/><path d="M16 15h.01"/><path d="M16 19h.01"/></svg>{%- endcapture -%}
+{%- capture ic_thermo -%}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>{%- endcapture -%}
+
 {%- case now.pressure_trend -%}
   {%- when "rising_fast" -%}{%- assign s_trend = s_rising_fast -%}
   {%- when "rising" -%}{%- assign s_trend = s_rising -%}
@@ -83,6 +128,19 @@
   {%- when "falling" -%}{%- assign s_trend = s_falling -%}
   {%- when "falling_fast" -%}{%- assign s_trend = s_falling_fast -%}
   {%- else -%}{%- assign s_trend = "—" -%}
+{%- endcase -%}
+
+{%- case now.sky -%}
+  {%- when "clear_night" -%}{%- assign ic_sky = ic_moon -%}{%- assign s_sky = s_sky_clear_night -%}
+  {%- when "partly_day" -%}{%- assign ic_sky = ic_cloud_sun -%}{%- assign s_sky = s_sky_partly_day -%}
+  {%- when "partly_night" -%}{%- assign ic_sky = ic_cloud_moon -%}{%- assign s_sky = s_sky_partly_night -%}
+  {%- when "cloudy" -%}{%- assign ic_sky = ic_cloud -%}{%- assign s_sky = s_sky_cloudy -%}
+  {%- when "fog" -%}{%- assign ic_sky = ic_fog -%}{%- assign s_sky = s_sky_fog -%}
+  {%- when "drizzle" -%}{%- assign ic_sky = ic_drizzle -%}{%- assign s_sky = s_sky_drizzle -%}
+  {%- when "rain" -%}{%- assign ic_sky = ic_rain_big -%}{%- assign s_sky = s_sky_rain -%}
+  {%- when "heavy_rain" -%}{%- assign ic_sky = ic_rain_big -%}{%- assign s_sky = s_sky_heavy_rain -%}
+  {%- when "snow" -%}{%- assign ic_sky = ic_snow -%}{%- assign s_sky = s_sky_snow -%}
+  {%- else -%}{%- assign ic_sky = ic_sun -%}{%- assign s_sky = s_sky_clear_day -%}
 {%- endcase -%}
 
 {%- assign w_dir = now.wind_dir -%}

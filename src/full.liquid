@@ -7,12 +7,15 @@
 <div class="layout layout--col gap--space-between">
 
   <div class="grid">
-    <div class="item col--span-4">
-      <div class="meta"></div>
-      <div class="content">
-        <span class="label label--small">{{ s_temp_now }}</span>
-        <span class="value value--tnums value--xxxlarge" data-value-fit="true">{{ n_temp }}°</span>
-        <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+    <div class="col gap--small col--span-4">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_thermo }}<span class="label label--underline">{{ s_temp }}</span></div>
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_sky }}<span class="label">{{ s_sky }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--xxxlarge" data-value-fit="true">{{ n_temp }}°</span>
+          <span class="label">{{ s_feels }} {{ n_feels }}°</span>
+        </div>
       </div>
     </div>
 
@@ -41,6 +44,17 @@
     </div>
 
     <div class="col gap--small">
+      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_drop }}<span class="label label--underline">{{ s_hum }}</span></div>
+      <div class="item">
+        <div class="meta"></div>
+        <div class="content">
+          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
+          <span class="label">{{ s_dew }} {{ n_dew }}°</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col gap--small">
       <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_gauge }}<span class="label label--underline">{{ s_pressure }}</span></div>
       <div class="item">
         <div class="meta"></div>
@@ -59,17 +73,6 @@
           <span class="value value--tnums value--large">{{ n_rain_24h }}<span class="label"> mm</span></span>
           <span class="label">{{ s_last24 }}</span>
           <span class="label">{{ s_intensity }} {{ n_rain_rate }} mm/h</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="col gap--small">
-      <div class="flex flex--row flex--left flex--center-y gap--small">{{ ic_drop }}<span class="label label--underline">{{ s_hum }}</span></div>
-      <div class="item">
-        <div class="meta"></div>
-        <div class="content">
-          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
-          <span class="label">{{ s_dew }} {{ n_dew }}°</span>
         </div>
       </div>
     </div>
