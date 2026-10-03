@@ -140,3 +140,6 @@ function transform(input) {
   };
   return base;
 }
+
+// El runtime serverless de TRMNL llama a run(); el runtime por defecto llama a transform().
+function run(input) { return transform(input); }
