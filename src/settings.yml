@@ -2,7 +2,7 @@
 name: meteocerdanyola.com
 strategy: polling
 polling_verb: get
-polling_url: 'https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug={{ station }}&dataset=recent&hours=24&variables=temperature%2Chumidity%2Cwind%2Cpressure%2Crain%2Csolar%2Cuv&format=json'
+polling_url: 'https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug={{ station }}&dataset=recent&hours=24&variables=temperature%2Chumidity%2Cwind%2Cpressure%2Crain&format=json'
 polling_headers: ''
 refresh_interval: 15
 dark_mode: 'no'

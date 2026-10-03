@@ -6,7 +6,7 @@ Proyecto personal y no oficial: los datos son de meteocerdanyola.com.
 
 ## Qué muestra
 
-- **Temperatura ahora** con un **icono del tiempo** (despejado, poco nublado, nublado, niebla, llovizna, lluvia, lluvia fuerte o nieve; sol o luna según la hora), sensación térmica y **gráfico de las últimas 24 h**, con máxima y mínima y la hora a la que se dieron.
+- **Temperatura ahora**, sensación térmica y **gráfico de las últimas 24 h**, con máxima y mínima y la hora a la que se dieron.
 - **Viento** (actual, dirección y grados, y racha máxima de las 24 h).
 - **Presión** y su tendencia en las últimas 3 horas.
 - **Lluvia** acumulada en las últimas 24 h e intensidad actual (mm/h).
@@ -27,18 +27,9 @@ El idioma cambia todos los textos, el separador decimal (coma en catalán y cast
 ## Cómo funciona
 
 1. TRMNL consulta cada 15 minutos la API de datos abiertos de la estación elegida:
-   `https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug=<estación>&dataset=recent&hours=24&variables=temperature,humidity,wind,pressure,rain,solar,uv&format=json`
+   `https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug=<estación>&dataset=recent&hours=24&variables=temperature,humidity,wind,pressure,rain&format=json`
 2. [`src/transform.js`](src/transform.js) reduce la respuesta (unas 1.100-1.400 lecturas, 400-550 KB) a unos 9 KB: valores actuales, máximas y mínimas, tendencia de presión, punto de rocío y series agrupadas cada 15 minutos. La lluvia por hora se calcula a partir del acumulado diario, que se reinicia a medianoche.
-3. Las plantillas Liquid dan formato a los números, traducen los textos, eligen el icono y dibujan el gráfico con Highcharts.
-
-### Icono del tiempo
-
-La estación no mide la nubosidad, así que el icono se deduce de los datos:
-
-- **Lluvia, llovizna o nieve**: si ha llovido en los últimos 20 minutos. Es nieve si la temperatura es de 1 °C o menos, llovizna por debajo de 1 mm/h y lluvia fuerte a partir de 7,6 mm/h.
-- **Niebla**: humedad del 97 % o más, punto de rocío a menos de 0,7 °C de la temperatura y casi sin viento.
-- **Despejado, poco nublado o nublado**: de día, si la estación tiene sensor solar (de momento solo *Centre*), se compara la radiación medida con la teórica de cielo despejado a esa hora. Si no hay sensor (*Ateneu* y *Montflorit* marcan siempre 0) o es de noche, se estima por la humedad: por debajo del 78 % despejado, del 78 al 90 % poco nublado y desde el 90 % nublado. Es solo una estimación.
-- **Sol o luna**: según la elevación del sol, calculada con las coordenadas de la estación.
+3. Las plantillas Liquid dan formato a los números, traducen los textos y dibujan el gráfico con Highcharts.
 
 Los datos que la estación no envía se muestran como `—`; nunca se interpretan como cero.
 

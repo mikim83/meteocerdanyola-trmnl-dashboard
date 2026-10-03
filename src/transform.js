@@ -20,27 +20,6 @@ function transform(input) {
   function fmt(n, d) { return n == null ? '—' : round(n, d).toFixed(d); }
   function isNum(v) { return typeof v === 'number' && isFinite(v); }
 
-  var RAD = Math.PI / 180;
-  // Elevación del sol en grados (algoritmo astronómico simplificado, error < 0,3°).
-  function sunElevation(ms, lat, lon) {
-    var d = ms / 86400000 + 2440587.5 - 2451545.0;
-    var g = (357.529 + 0.98560028 * d) % 360;
-    var q = (280.459 + 0.98564736 * d) % 360;
-    var L = (q + 1.915 * Math.sin(g * RAD) + 0.02 * Math.sin(2 * g * RAD)) % 360;
-    var e = 23.439 - 0.00000036 * d;
-    var ra = Math.atan2(Math.cos(e * RAD) * Math.sin(L * RAD), Math.cos(L * RAD)) / RAD;
-    var dec = Math.asin(Math.sin(e * RAD) * Math.sin(L * RAD)) / RAD;
-    var gmst = (280.46061837 + 360.98564736629 * d) % 360;
-    var ha = (gmst + lon - ra) * RAD;
-    return Math.asin(Math.sin(lat * RAD) * Math.sin(dec * RAD) + Math.cos(lat * RAD) * Math.cos(dec * RAD) * Math.cos(ha)) / RAD;
-  }
-  // Radiación global (W/m²) con cielo despejado según el modelo de Haurwitz.
-  function clearSkyWm2(elev) {
-    if (elev <= 3) return 0;
-    var s = Math.sin(elev * RAD);
-    return 1098 * s * Math.exp(-0.057 / s);
-  }
-
   var base = {
     site: {
       slug: station.slug || '',
@@ -127,49 +106,6 @@ function transform(input) {
   var wind = lastVal('wind_speed_kmh'), deg = lastVal('wind_direction_deg');
   var tMax = extreme('temperature_c', 1), tMin = extreme('temperature_c', -1), wMax = extreme('wind_speed_kmh', 1);
 
-  // --- estado del cielo (icono) ---
-  var coords = station.coordinates || {};
-  var elev = isNum(coords.latitude) && isNum(coords.longitude) ? sunElevation(Date.parse(last.observed_at), coords.latitude, coords.longitude) : null;
-  var isDay = elev == null ? true : elev > 0;
-  var recent = rows.filter(function (r) { return r.ts >= last.ts - 20 * 60000; });
-  var maxRate = 0, recentRain = 0, solarSum = 0, solarN = 0, prevRain = null;
-  recent.forEach(function (r) {
-    if (isNum(r.rain_rate_mm_h)) maxRate = Math.max(maxRate, r.rain_rate_mm_h);
-    if (isNum(r.solar_w_m2)) { solarSum += r.solar_w_m2; solarN++; }
-    if (isNum(r.rain_today_mm)) {
-      if (prevRain != null) recentRain += r.rain_today_mm >= prevRain ? r.rain_today_mm - prevRain : r.rain_today_mm;
-      prevRain = r.rain_today_mm;
-    }
-  });
-  var rainRate = maxRate > 0 ? maxRate : recentRain * 3;
-  var precipitating = maxRate > 0 || recentRain > 0.05;
-  var solarMax = 0;
-  rows.forEach(function (r) { if (isNum(r.solar_w_m2) && r.solar_w_m2 > solarMax) solarMax = r.solar_w_m2; });
-  var hasSolar = solarMax > 10; // Ateneu y Montflorit no tienen sensor: marcan 0 siempre
-  var cover = null, skyEstimated = true; // cover: clear | partly | cloudy
-  var clearRef = elev != null ? clearSkyWm2(elev) : 0;
-  if (isDay && hasSolar && solarN && clearRef > 40) {
-    var k = (solarSum / solarN) / clearRef;
-    cover = k >= 0.75 ? 'clear' : k >= 0.4 ? 'partly' : 'cloudy';
-    skyEstimated = false;
-  } else if (hum != null) {
-    cover = hum >= 90 ? 'cloudy' : hum >= 78 ? 'partly' : 'clear';
-  } else {
-    cover = 'clear';
-  }
-  var sky;
-  if (precipitating) {
-    sky = temp != null && temp <= 1 ? 'snow' : rainRate < 1 ? 'drizzle' : rainRate < 7.6 ? 'rain' : 'heavy_rain';
-  } else if (hum != null && dew != null && temp != null && hum >= 97 && temp - dew <= 0.7 && (wind == null || wind < 6)) {
-    sky = 'fog';
-  } else if (cover === 'clear') {
-    sky = isDay ? 'clear_day' : 'clear_night';
-  } else if (cover === 'partly') {
-    sky = isDay ? 'partly_day' : 'partly_night';
-  } else {
-    sky = 'cloudy';
-  }
-
   var toTs = localMs(input.query && input.query.to);
   var ageMin = toTs != null ? Math.max(0, Math.round((toTs - last.ts) / 60000)) : 0;
 
@@ -188,10 +124,7 @@ function transform(input) {
     pressure_trend: pressTrend,
     pressure_delta: pressDelta == null ? '—' : (pressDelta > 0 ? '+' : '') + fmt(pressDelta, 1),
     rain_today: fmt(lastVal('rain_today_mm'), 1),
-    rain_rate: fmt(lastVal('rain_rate_mm_h'), 1),
-    sky: sky,
-    sky_estimated: skyEstimated,
-    is_day: isDay
+    rain_rate: fmt(lastVal('rain_rate_mm_h'), 1)
   };
   base.day = {
     temp_max: fmt(tMax && tMax.v, 1), temp_max_time: tMax ? hhmm(tMax.ts) : '—',

@@ -9,7 +9,7 @@
     <div class="meta"></div>
     <div class="content">
       <span class="label label--small">{{ observed.time }}{% if observed.stale %} ({{ s_delayed }}){% endif %}</span>
-      <div class="flex flex--row flex--left flex--center-y gap--medium">{{ ic_sky | replace: 'width="56" height="56"', 'width="48" height="48"' }}<span class="value value--tnums value--xxlarge">{{ n_temp }}°</span></div>
+      <span class="value value--tnums value--xxlarge" data-value-fit="true">{{ n_temp }}°</span>
       <span class="label">{{ s_feels }} {{ n_feels }}° · {{ s_hum }} {{ now.hum }}%</span>
       <span class="label label--small">{{ s_wind }} {{ now.wind }} km/h {{ w_dir }} · {{ s_rain }} {{ n_rain_24h }} mm</span>
     </div>
