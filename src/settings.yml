@@ -6,7 +6,7 @@ static_data: ''
 polling_verb: get
 framework_version: 3.4.0
 serverless_language: ''
-refresh_interval_floor: ''
+refresh_interval_floor: '5'
 polling_url: https://meteocerdanyola.com/2026/api/open-data.php?v=1&slug={{ station }}&dataset=recent&hours=24&variables=temperature%2Chumidity%2Cwind%2Cpressure%2Crain&format=json
 polling_headers: ''
 polling_body: ''
