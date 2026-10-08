@@ -4,6 +4,7 @@
   <span class="description">{{ site.name }} {{ s_nodata_desc }}</span>
 </div>
 {%- else -%}
+{%- assign chart_id = "chart-" | append_random -%}
 <div class="layout layout--col gap--space-between">
 
   <div class="grid">
@@ -27,11 +28,11 @@
 
     <div class="col col--span-8 gap--small">
       <span class="label label--small">{{ s_last24 }} · {{ s_rain_bars }}</span>
-      <div id="chart-temp" class="w--full"></div>
+      <div id="{{ chart_id }}" class="w--full"></div>
     </div>
   </div>
 
-  <div class="w--full b-h-gray-5"></div>
+  <div class="divider"></div>
 
   <div class="grid grid--cols-4">
     <div class="col gap--small">
@@ -39,7 +40,7 @@
       <div class="item">
         <div class="meta"></div>
         <div class="content">
-          <span class="value value--tnums value--large">{{ now.wind }}<span class="label"> km/h</span></span>
+          <div class="flex flex--row flex--baseline gap--xsmall"><span class="value value--tnums value--large">{{ now.wind }}</span><span class="label">km/h</span></div>
           <span class="label">{{ w_dir }} {{ now.wind_deg }}°{% if now.calm %} · {{ s_calm }}{% endif %}</span>
           <span class="label">{{ s_gust }} {{ day.wind_max }} km/h</span>
         </div>
@@ -51,7 +52,7 @@
       <div class="item">
         <div class="meta"></div>
         <div class="content">
-          <span class="value value--tnums value--large">{{ now.hum }}<span class="label"> %</span></span>
+          <div class="flex flex--row flex--baseline gap--xsmall"><span class="value value--tnums value--large">{{ now.hum }}</span><span class="label">%</span></div>
           <span class="label">{{ s_dew }} {{ n_dew }}°</span>
         </div>
       </div>
@@ -73,7 +74,7 @@
       <div class="item">
         <div class="meta"></div>
         <div class="content">
-          <span class="value value--tnums value--large">{{ n_rain_24h }}<span class="label"> mm</span></span>
+          <div class="flex flex--row flex--baseline gap--xsmall"><span class="value value--tnums value--large">{{ n_rain_24h }}</span><span class="label">mm</span></div>
           <span class="label">{{ s_last24 }}</span>
           <span class="label">{{ s_intensity }} {{ n_rain_rate }} mm/h</span>
         </div>
@@ -82,7 +83,7 @@
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp_hourly | json }}, { height: 190, fill: true, suffix: '°', tick: 6, size: 14, labelEvery: 6, rain: {{ series.rain_hourly | json }} });</script>
+<script>mcChart('{{ chart_id }}', {{ series.temp_hourly | json }}, { fill: true, suffix: '°', tick: 6, size: 14, labelEvery: 6, rain: {{ series.rain_hourly | json }} });</script>
 {%- endif -%}
 
 <div class="title_bar">

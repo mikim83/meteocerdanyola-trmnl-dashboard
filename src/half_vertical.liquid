@@ -4,6 +4,7 @@
   <span class="description">{{ site.name }} {{ s_nodata_desc }}</span>
 </div>
 {%- else -%}
+{%- assign chart_id = "chart-" | append_random -%}
 <div class="layout layout--col gap--space-between">
 
   <div class="item">
@@ -17,7 +18,7 @@
 
   <div class="flex flex--col gap--small">
     <span class="label label--small">{{ s_last24 }} · {{ s_max }} {{ n_tmax }}° · {{ s_min }} {{ n_tmin }}°</span>
-    <div id="chart-temp" class="w--full"></div>
+    <div id="{{ chart_id }}" class="w--full"></div>
   </div>
 
   <div class="grid grid--cols-2">
@@ -56,7 +57,7 @@
   </div>
 
 </div>
-<script>mcChart('chart-temp', {{ series.temp | json }}, { height: 84, fill: true, suffix: '°', tick: 8, size: 12, tickAmount: 3 });</script>
+<script>mcChart('{{ chart_id }}', {{ series.temp | json }}, { fill: true, suffix: '°', tick: 8, size: 12, tickAmount: 3 });</script>
 {%- endif -%}
 
 <div class="title_bar">

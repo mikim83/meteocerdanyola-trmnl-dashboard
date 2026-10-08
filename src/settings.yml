@@ -50,6 +50,13 @@ custom_fields:
   - Castellano: es
   - English: en
   default: es
+- keyname: about
+  field_type: author_bio
+  name: About This Plugin
+  category: environment,life
+  description: Live weather from the meteocerdanyola.com stations in Cerdanyola del Vallès (Barcelona). Shows the current temperature, wind, pressure, rain and humidity, a 24 h temperature chart with hourly rain bars, and the high and low. Three stations and three languages (Catalan, Spanish, English). Unofficial personal project; data from meteocerdanyola.com.
+  github_url: https://github.com/mikim83/meteocerdanyola-trmnl-dashboard
+  learn_more_url: https://meteocerdanyola.com
 name: meteocerdanyola.com
 description: meteocerdanyola.com dashboard
 refresh_interval: 15

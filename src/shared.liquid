@@ -115,72 +115,88 @@
 
 <script src="https://trmnl.com/js/highcharts/12.3.0/highcharts.js"></script>
 <script src="https://trmnl.com/js/highcharts/12.3.0/pattern-fill.js"></script>
+<script src="https://trmnl.com/js/chartkick/5.0.1/chartkick.min.js"></script>
 <script>
-  // Dibuja una serie [[ms, valor], ...] (hora local como UTC). opts: type, height (px), suffix, tick (h), size (px de fuente), labelEvery (h), rain ([[ms, mm], ...] en barras con eje propio), fill (el gráfico ocupa el espacio libre de la vista)
+  // Dibuja una serie [[ms, valor], ...] (hora local como UTC) con TRMNLCharts, que adapta el
+  // gráfico al dispositivo, la escala, el modo oscuro y el tema. opts: suffix, tick (h), size (px
+  // de fuente), labelEvery (h), rain ([[ms, mm], ...] en barras con eje propio), min, tickAmount,
+  // fill (ajusta la altura al espacio libre de la vista).
   window.mcChart = function (id, data, opts) {
     opts = opts || {};
-    var size = (opts.size || 14) + 'px';
-    var pts = data.map(function (d) { return { x: d[0], y: d[1] }; });
-    if (opts.labelEvery && data.length) {
-      var step = opts.labelEvery * 3600 * 1000, end = data[data.length - 1][0];
-      for (var t = Math.ceil(data[0][0] / step) * step; t <= end; t += step) {
-        var best = 0;
-        data.forEach(function (d, i) { if (Math.abs(d[0] - t) < Math.abs(data[best][0] - t)) best = i; });
-        if (Math.abs(data[best][0] - t) <= 35 * 60 * 1000) {
-          pts[best].marker = { enabled: true, radius: 5, fillColor: '#000', lineWidth: 0 };
-          pts[best].dataLabels = {
-            enabled: true, format: '{y:.1f}' + (opts.suffix || ''), y: -12, allowOverlap: true, crop: false, overflow: 'allow',
-            backgroundColor: '#fff', padding: 2, borderRadius: 3,
-            style: { fontSize: size, fontWeight: 'bold', color: '#000', textOutline: 'none' }
-          };
-        }
-      }
-    }
-    var rainPts = null, rainMax = 3;
-    if (opts.rain && opts.rain.length) {
-      rainPts = opts.rain.map(function (d) {
-        var p = { x: d[0], y: d[1] };
-        if (d[1] >= 0.5) p.dataLabels = { enabled: true, format: '{y:.1f}', y: -2, allowOverlap: true, crop: false, overflow: 'allow', style: { fontSize: '11px', fontWeight: 'bold', color: '#000', textOutline: 'none' } };
-        rainMax = Math.max(rainMax, d[1] * 2.8);
-        return p;
-      });
-    }
     var draw = function () {
-      Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
-      var chart = Highcharts.chart(id, {
-        chart: { height: opts.height, backgroundColor: 'transparent', animation: false, spacing: [6, 6, 0, 12] },
-        title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
-        xAxis: {
-          type: 'datetime', lineColor: '#000', tickColor: '#000', tickLength: 4, gridLineWidth: 0,
-          tickInterval: (opts.tick || 6) * 3600 * 1000,
-          labels: { format: '{value:%H}h', style: { fontSize: size, color: '#000' } }
-        },
-        yAxis: [{
-          title: { text: null }, gridLineWidth: 1, gridLineColor: '#000', gridLineDashStyle: 'ShortDot',
-          tickAmount: opts.tickAmount || 4, min: opts.min, maxPadding: opts.labelEvery ? 0.2 : undefined, softMin: opts.softMin, softMax: opts.softMax,
-          labels: { format: '{value}' + (opts.suffix || ''), style: { fontSize: size, color: '#000' } }
-        }].concat(rainPts ? [{ title: { text: null }, visible: false, opposite: true, min: 0, max: rainMax, gridLineWidth: 0 }] : []),
-        plotOptions: {
-          series: { animation: false, enableMouseTracking: false, color: '#000', lineWidth: 4, marker: { enabled: false } },
-          column: { borderWidth: 0, pointPadding: 0.05, groupPadding: 0, color: '#000' }
-        },
-        series: (rainPts ? [{
-          type: 'column', yAxis: 1, data: rainPts, zIndex: 0, pointPadding: 0.08, groupPadding: 0,
-          color: { pattern: { image: 'https://trmnl.com/images/grayscale/gray-5.png', width: 12, height: 12 } },
-          borderColor: '#000', borderWidth: 1.5
-        }] : []).concat([{ type: 'line', data: pts, zIndex: 2 }])
+      TRMNLCharts.watch(id, function () {
+        var px = function (v) { return TRMNLPaint.px(v, { el: id }); };
+        var size = px(opts.size || 14) + 'px';
+        var ink = TRMNLCharts.series(0, 1, { el: id });
+        var pts = data.map(function (d) { return { x: d[0], y: d[1] }; });
+        if (opts.labelEvery && data.length) {
+          var step = opts.labelEvery * 3600 * 1000, end = data[data.length - 1][0];
+          for (var t = Math.ceil(data[0][0] / step) * step; t <= end; t += step) {
+            var best = 0;
+            data.forEach(function (d, i) { if (Math.abs(d[0] - t) < Math.abs(data[best][0] - t)) best = i; });
+            if (Math.abs(data[best][0] - t) <= 35 * 60 * 1000) {
+              pts[best].marker = { enabled: true, radius: px(5), fillColor: ink, lineWidth: 0 };
+              pts[best].dataLabels = {
+                enabled: true, format: '{y:.1f}' + (opts.suffix || ''), y: -px(12), allowOverlap: true, crop: false, overflow: 'allow',
+                style: { fontSize: size, fontWeight: 'bold', textOutline: 'none' }
+              };
+            }
+          }
+        }
+        var rainPts = null, rainMax = 3;
+        if (opts.rain && opts.rain.length) {
+          rainPts = opts.rain.map(function (d) {
+            var p = { x: d[0], y: d[1] };
+            if (d[1] >= 0.5) p.dataLabels = { enabled: true, format: '{y:.1f}', y: -2, allowOverlap: true, crop: false, overflow: 'allow', style: { fontSize: px(11) + 'px', fontWeight: 'bold', textOutline: 'none' } };
+            rainMax = Math.max(rainMax, d[1] * 2.8);
+            return p;
+          });
+        }
+        var chart = Highcharts.chart(id, TRMNLCharts.merge(TRMNLCharts.options({ el: id }), {
+          chart: { height: null, backgroundColor: 'transparent', animation: false, spacing: [px(6), px(6), 0, px(12)] },
+          title: { text: null }, credits: { enabled: false }, legend: { enabled: false }, tooltip: { enabled: false },
+          xAxis: {
+            type: 'datetime', tickLength: px(4), gridLineWidth: 0,
+            tickInterval: (opts.tick || 6) * 3600 * 1000,
+            labels: { format: '{value:%H}h', style: { fontSize: size } }
+          },
+          yAxis: [{
+            title: { text: null }, gridLineWidth: 1, gridLineDashStyle: 'ShortDot',
+            tickAmount: opts.tickAmount || 4, min: opts.min, softMin: opts.softMin, softMax: opts.softMax, maxPadding: opts.labelEvery ? 0.2 : undefined,
+            labels: { format: '{value}' + (opts.suffix || ''), style: { fontSize: size } }
+          }].concat(rainPts ? [{ title: { text: null }, visible: false, opposite: true, min: 0, max: rainMax, gridLineWidth: 0 }] : []),
+          plotOptions: {
+            series: { animation: false, enableMouseTracking: false, color: ink, lineWidth: px(4), marker: { enabled: false } },
+            column: { borderWidth: 0, pointPadding: 0.05, groupPadding: 0 }
+          },
+          series: (rainPts ? [{
+            type: 'column', yAxis: 1, data: rainPts, zIndex: 0, pointPadding: 0.08, groupPadding: 0,
+            color: TRMNLCharts.series(1, 3, { el: id }), borderColor: ink, borderWidth: px(1.5)
+          }] : []).concat([{ type: 'line', data: pts, zIndex: 2 }])
+        }));
+        // Ajusta la altura al espacio libre de la vista (pantallas de distinto tamaño).
+        var fit = function () {
+          var layout = chart.container.closest('.layout');
+          if (!layout) return;
+          var used = 0;
+          for (var i = 0; i < layout.children.length; i++) used += layout.children[i].offsetHeight;
+          var h = Math.max(60, Math.round(chart.chartHeight + layout.clientHeight - used - 18));
+          if (Math.abs(h - chart.chartHeight) > 1) chart.setSize(null, h, false);
+        };
+        if (opts.fill) { fit(); window.addEventListener('load', fit); }
+        return chart;
       });
-      // Ajusta la altura al espacio libre de la vista (pantallas de distinto tamaño).
-      var fit = function () {
-        var layout = document.getElementById(id).closest('.layout');
-        if (!layout) return;
-        var used = 0;
-        for (var i = 0; i < layout.children.length; i++) used += layout.children[i].offsetHeight;
-        var h = Math.max(60, Math.round(chart.chartHeight + layout.clientHeight - used - 18));
-        if (Math.abs(h - chart.chartHeight) > 1) chart.setSize(null, h, false);
-      };
-      if (opts.fill) { fit(); window.addEventListener('load', fit); }
     };
-    if (window.Highcharts) draw(); else window.addEventListener('load', draw);
+    // Espera a Highcharts, TRMNLCharts y TRMNLPaint (los carga el framework) antes de dibujar.
+    var tries = 0;
+    var whenReady = function () {
+      if (window.Highcharts && window.TRMNLCharts && window.TRMNLPaint) {
+        Highcharts.setOptions({ lang: { decimalPoint: '{{ dec }}' } });
+        draw();
+      } else if (tries++ < 200) {
+        setTimeout(whenReady, 50);
+      }
+    };
+    whenReady();
   };
 </script>
