@@ -183,7 +183,7 @@
           var h = Math.max(60, Math.round(chart.chartHeight + layout.clientHeight - used - 18));
           if (Math.abs(h - chart.chartHeight) > 1) chart.setSize(null, h, false);
         };
-        if (opts.fill) { fit(); window.addEventListener('load', fit); }
+        if (opts.fill) { fit(); setTimeout(fit, 0); window.addEventListener('load', fit); }
         return chart;
       });
     };
